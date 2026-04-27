@@ -208,5 +208,5 @@ SOFTWARE.
 
 ## 🤝 Contact
 
-Author:  Thor Einar Friis, PhD
+Author:  Thor Einar Friis
 ORCID:(https://orcid.org/0000-0002-4132-4912)
