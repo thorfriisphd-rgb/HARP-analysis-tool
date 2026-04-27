@@ -1,8 +1,10 @@
 # HARP — Heptad Assignment Register Probe
 
-HARP is a reproducible computational pipeline for detecting phase-aligned contact enrichment in coiled-coil interactions.  
-It is developed and applied here to test the hypothesis that **C12/IBAM is a conserved contractile-system-associated protein**, rather than an RNA ligase.
+Reproducibility pipeline for the manuscript:
 
+"C12orf29 encodes IBAM (In Between Actin and Myosin), a sarcomeric protein with a conserved actomyosin binding grammar spanning ~1 billion years of evolution."
+
+HARP quantifies heptad-phase contact enrichment to assess whether IBAM–Myh interactions exhibit conserved coiled-coil register logic across taxa. It is developed and applied here to evaluate the hypothesis that C12/IBAM functions as a conserved contractile-system-associated protein, rather than an RNA ligase.
 ---
 
 ##  Overview
