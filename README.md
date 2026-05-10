@@ -252,10 +252,11 @@ If you use this pipeline, please cite:
 ---
 
 
+## Author
 
+Thor Einar Friis
 
-## Contact
+ORCID: https://orcid.org/0000-0002-4132-4912
 
-Author: Thor Einar Friis, PhD
-
-ORCID: [https://orcid.org/0000-0002-4132-4912](https://orcid.org/0000-0002-4132-4912)
+Independent researcher, Bodø, Norway.
+PhD in Molecular Biology, Queensland University of Technology (QUT).
