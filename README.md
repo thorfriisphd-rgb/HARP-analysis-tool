@@ -247,7 +247,7 @@ SOFTWARE.
 
 If you use this pipeline, please cite:
 
-> Friis, T. (2026). C12orf29 encodes IBAM (In Between Actin and Myosin), a sarcomeric protein with a conserved actomyosin binding grammar. *bioRxiv* [preprint]. DOI: [to be assigned]
+>Friis TE. C12orf29 encodes IBAM (In Between Actin and Myosin), a conserved actomyosin-associated protein exhibiting deeply conserved interaction grammar across eukaryotic evolution. Manuscript in preparation.
 
 ---
 
