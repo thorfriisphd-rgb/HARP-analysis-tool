@@ -38,6 +38,7 @@ HARP-output/2026-05-10_08-53-04/
 
 ## Repository Structure
 
+```text
 .
 ├── data/
 │   ├── samples.csv
@@ -60,6 +61,7 @@ HARP-output/2026-05-10_08-53-04/
 │
 ├── requirements.txt
 └── README.md
+```
 
 ---
 
