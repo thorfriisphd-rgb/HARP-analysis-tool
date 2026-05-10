@@ -1,76 +1,85 @@
-# HARP — Heptad Assignment Register Probe
+## Scientific Context
 
-Reproducibility pipeline for the manuscript:
+HARP is part of the broader CCMHCG/IBAM computational ecosystem, alongside PRCO and SWING.
 
-"C12orf29 encodes IBAM (In Between Actin and Myosin), a sarcomeric protein with a conserved actomyosin binding grammar spanning ~1 billion years of evolution."
+In this framework:
 
-HARP quantifies heptad-phase contact enrichment to assess whether IBAM–Myh interactions exhibit conserved coiled-coil register logic across taxa. It is developed and applied here to evaluate the hypothesis that C12/IBAM functions as a conserved contractile-system-associated protein, rather than an RNA ligase.
+- **PRCO** decodes persistent residue-level contacts from molecular dynamics trajectories.
+- **HARP** tests whether those contacts are enriched in particular coiled-coil heptad phases.
+- **SWING** tests whether projected interface residues show cross-taxon conservation and biochemical-class convergence.
 
+Together, these methods support the working hypothesis that IBAM/C12orf29 recognises a degenerate coiled-coil interaction grammar associated with contractile systems.
 
-##  Overview
-
-This repository provides:
-
-- A complete HARP analysis pipeline
-    
-- Precomputed PRCO interface datasets across 26 taxa
-    
-- Fully reproducible generation of all manuscript figures
-    
-
-Running:
-
-```bash
-python scripts/run_batch_harp_panel.py
-```
-
-will:
-
-- Compute HARP scores across taxa
-    
-- Perform empirical null-model testing
-    
-- Generate all manuscript figures (SVG, PNG, PDF)
-    
+HARP should not be viewed only as an endpoint validation assay. In the May 2026 RefSeq-guided revision, HARP/SWING behaviour helped expose and rationalise improved Myh-tail window selection, including the Ovis Myh7T rescue. This supports the use of HARP as an exploratory interaction-grammar discovery framework.
 
 ---
 
-##  Repository Structure
+## May 2026 RefSeq-Rescued Dataset
+
+The current canonical dataset incorporates the May 2026 input corrections used across the IBAM computational workflow.
+
+Key updates include:
+
+- correction of a major **Magallana angulata** C12 truncation
+    - previous: C12 1–231, MyhT 232–304
+    - current: C12 1–345, MyhT 346–413
+- extension of the **Ovis aries** Myh7T window
+    - previous: C12 1–325, MyhT 326–382
+    - current: C12 1–325, MyhT 326–400
+- regenerated PRCO tables for updated or harmonised taxa
+
+The canonical May 2026 run is provided under:
 
 ```
-.├── data/  
-│ ├── samples.csv  
-│ └── prco/  
-│ ├── *_prco.csv  
-│  
-├── scripts/  
-│ ├── run_batch_harp_panel.py  
-│ ├── generate_harp_plots.py  
-│ └── harp_run_scaffold.py  
-│  
-├── requirements.txt  
+HARP-output/2026-05-10_08-53-04/
+```
+
+---
+
+## Repository Structure
+
+.
+├── data/
+│   ├── samples.csv
+│   └── prco/
+│       └── *_prco.csv
+│
+├── scripts/
+│   ├── run_batch_harp_panel.py
+│   ├── generate_harp_plots.py
+│   └── harp_run_scaffold.py
+│
+├── HARP-output/
+│   └── 2026-05-10_08-53-04/
+│       ├── harp_panel_summary.tsv
+│       ├── harp_panel_summary_20260510_085653.tsv
+│       ├── harp_rankings.tsv
+│       ├── harp_run_config.json
+│       ├── harp_run.log
+│       └── figures/
+│
+├── requirements.txt
 └── README.md
-```
 
 ---
 
-##  Installation
+## Installation
 
-Tested with Python 3.10+
+Tested with Python 3.10+.
 
 Install dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
 ---
 
-##  Running the Pipeline
+## Running the Pipeline
 
 From the repository root:
 
-```bash
+```
 python scripts/run_batch_harp_panel.py
 ```
 
@@ -84,21 +93,31 @@ Each run is self-contained and does not overwrite previous results.
 
 ---
 
-##  Outputs
+## Outputs
 
-#### Outputs are generated on run and written to
-```
+A standard HARP run writes:
+
+```text
 HARP-output/<timestamp>/
 ├── harp_panel_summary.tsv
 ├── harp_panel_summary_<timestamp>.tsv
 ├── harp_rankings.tsv
+├── harp_run_config.json
+├── harp_run.log
 └── figures/
-    ├── 01_observed_vs_null_p95.*
-    ├── 02_score_vs_margin.*
-    └── 03_phase_score_heatmap.*
-
+    ├── 01_observed_vs_null_p95.svg
+    ├── 01_observed_vs_null_p95.png
+    ├── 01_observed_vs_null_p95.pdf
+    ├── 02_score_vs_margin.svg
+    ├── 02_score_vs_margin.png
+    ├── 02_score_vs_margin.pdf
+    ├── 03_phase_score_heatmap.svg
+    ├── 03_phase_score_heatmap.png
+    ├── 03_phase_score_heatmap.pdf
+    └── harp_plots_manifest.txt
 ```
 
+---
 ### Summary Tables
 
 - **harp_panel_summary.tsv**  
@@ -109,10 +128,8 @@ HARP-output/<timestamp>/
     
 - **harp_rankings.tsv**  
     Ranked view for rapid inspection
-    
 
 ---
-
 ### Figures (auto-generated)
 
 1. **Observed vs null (95th percentile)**  
@@ -124,67 +141,87 @@ HARP-output/<timestamp>/
 3. **Phase-score landscape heatmap**  
     Full heptad phase distribution across taxa
     
+Figures are generated as SVG, PNG, and PDF.
+
+---
+## Interpretation
+
+HARP quantifies whether persistent IBAM–MyhT contacts preferentially occupy particular heptad phases.
+
+Core metrics include:
+
+- **best score** — strongest observed phase-aligned contact enrichment
+- **margin** — separation between best and second-best phase scores
+- **best-minus-flat** — deviation from a flat/non-enriched profile
+- **empirical null p-values** — comparison against shuffled occupied-span nulls
+- **phase stability** — consistency of phase calls across cutoffs
+
+HARP distinguishes:
+
+- stable phase-biased interfaces
+- competing or multi-register phase profiles
+- weak or flat interaction profiles
+
+For the IBAM project, competing phases are not automatically interpreted as failure. A degenerate coiled-coil substrate may retain biologically meaningful multi-register compatibility.
 
 ---
 
-##  Interpretation
+## Null Model
 
-HARP quantifies:
+The current canonical run uses:
 
-- **Best score** → enrichment of a/d heptad contacts
-    
-- **Margin** → decisiveness of phase assignment
-    
-- **Null model** → statistical significance via permutation
-    
+```text
+shuffle_occupied_span
+```
 
-Together, these distinguish:
+with:
 
-- Strong, phase-specific binding
-    
-- Multi-register compatibility
-    
-- Weak or flat interaction profiles
-    
+```text
+10,000 permutations
+seed = 123
+```
+
+This tests whether the observed contact distribution exceeds expectations from shuffled occupied positions while preserving the occupied span structure of the interface.
 
 ---
 
-##  Scientific Context
+## Relationship to SWING
 
-This pipeline supports the interpretation that:
+HARP and SWING test related but distinct features of the IBAM–MyhT interaction grammar.
 
-> IBAM (C12orf29) encodes a conserved structural interface that recognises the physicochemical grammar of a degenerate coiled-coil substrate, rather than acting as a sequence-specific RNA ligase.
+- HARP asks whether MD-derived contact residues are enriched in coiled-coil heptad phases.
+- SWING asks whether projected interface positions show evolutionary conservation and biochemical-class convergence across taxa.
 
-The evidence integrates:
-
-- Structural prediction (AlphaFold3)
-    
-- Molecular dynamics simulations
-    
-- PRCO interface decoding
-    
-- HARP register analysis
-    
+The May 2026 RefSeq-guided rescue, especially the Ovis Myh7T window extension and Magallana truncation correction, strengthened both workflows and supports their use as exploratory tools for interaction-window discovery.
 
 ---
 
-##  Reproducibility
+## Reproducibility
 
-All results and figures can be regenerated directly:
+All included outputs and figures can be regenerated directly:
 
 ```bash
 python scripts/run_batch_harp_panel.py
 ```
 
-No external datasets are required.
+No external datasets are required for the included 26-taxon panel.
+
+The canonical May 2026 run was generated with:
+
+```text
+samples: data/samples.csv
+prco_dir: data/prco
+null_model: shuffle_occupied_span
+shuffle_iter: 10000
+seed: 123
+```
 
 ---
-
-##  License
+## License
 
 MIT License
 
-Copyright (c)
+Copyright (c) Thor Einar Friis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy  
 of this software and associated documentation files (the "Software"), to deal  
@@ -205,9 +242,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---
+## Contact
 
-##  Contact
+Author: Thor Einar Friis, PhD  
 
-Author:  Thor Einar Friis
-
-ORCID:  https://orcid.org/0000-0002-4132-4912
+ORCID: [https://orcid.org/0000-0002-4132-4912](https://orcid.org/0000-0002-4132-4912)
