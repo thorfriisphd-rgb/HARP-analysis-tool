@@ -39,7 +39,6 @@ HARP-output/2026-05-10_08-53-04/
 ## Repository Structure
 
 ```text
-.
 ├── data/
 │   ├── samples.csv
 │   └── prco/
@@ -62,7 +61,6 @@ HARP-output/2026-05-10_08-53-04/
 ├── requirements.txt
 └── README.md
 ```
-
 ---
 
 ## Installation
@@ -122,27 +120,27 @@ HARP-output/<timestamp>/
 ---
 ### Summary Tables
 
-- **harp_panel_summary.tsv**  
+- **harp_panel_summary.tsv**
     Canonical output used for downstream plotting
-    
-- **harp_panel_summary_.tsv**  
+
+- **harp_panel_summary_.tsv**
     Archived run-specific output
-    
-- **harp_rankings.tsv**  
+
+- **harp_rankings.tsv**
     Ranked view for rapid inspection
 
 ---
 ### Figures (auto-generated)
 
-1. **Observed vs null (95th percentile)**  
+1. **Observed vs null (95th percentile)**
     Tests whether observed phase enrichment exceeds null expectation
-    
-2. **Best score vs phase margin**  
+
+2. **Best score vs phase margin**
     Separates strong/specific vs multi-register binding regimes
-    
-3. **Phase-score landscape heatmap**  
+
+3. **Phase-score landscape heatmap**
     Full heptad phase distribution across taxa
-    
+
 Figures are generated as SVG, PNG, and PDF.
 
 ---
@@ -225,27 +223,39 @@ MIT License
 
 Copyright (c) Thor Einar Friis
 
-Permission is hereby granted, free of charge, to any person obtaining a copy  
-of this software and associated documentation files (the "Software"), to deal  
-in the Software without restriction, including without limitation the rights  
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell  
-copies of the Software, and to permit persons to whom the Software is  
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all  
+The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR  
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,  
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE  
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER  
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE  
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---
+
+## Citation
+
+If you use this pipeline, please cite:
+
+> Friis, T. (2026). C12orf29 encodes IBAM (In Between Actin and Myosin), a sarcomeric protein with a conserved actomyosin binding grammar. *bioRxiv* [preprint]. DOI: [to be assigned]
+
+---
+
+
+
+
 ## Contact
 
-Author: Thor Einar Friis, PhD  
+Author: Thor Einar Friis, PhD
 
 ORCID: [https://orcid.org/0000-0002-4132-4912](https://orcid.org/0000-0002-4132-4912)
