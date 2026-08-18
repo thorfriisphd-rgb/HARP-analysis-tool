@@ -1,0 +1,30 @@
+# HARP v4.1 example per-taxon configuration.
+# Paths may be absolute or relative to this YAML file.
+myht_fasta: ./data/myht.fa
+
+deepcoil:
+  file: ./data/myht.out
+  cc_threshold: 0.5
+  anchor_threshold: 0.5
+
+trajectory:
+  topology: ./data/md.tpr
+  trajectory: ./data/md.xtc
+  mg_selection: "segid MG"
+  myht_selection: "segid MYHT"
+  cutoff_angstrom: 4.5
+  contact_mode: hard
+  smooth_power: 6
+  start: null
+  stop: null
+  step: 1
+
+statistics:
+  n_permutations: 9999
+  block_size: 4
+  seed: 20260801
+  n_time_blocks: 20
+  target_phases: [a, d]
+  primary_test: period7_max_mode
+
+output_dir: ./outputs/example_taxon

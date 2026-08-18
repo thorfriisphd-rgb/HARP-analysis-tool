@@ -1,0 +1,4 @@
+taxon,summary_json
+Taxon_A,./outputs/Taxon_A/harp_v4_summary.json
+Taxon_B,./outputs/Taxon_B/harp_v4_summary.json
+Taxon_C,./outputs/Taxon_C/harp_v4_summary.json

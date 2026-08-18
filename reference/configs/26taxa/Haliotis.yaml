@@ -1,0 +1,27 @@
+myht_fasta: EXTERNAL_REFERENCE_DATA/Haliotis/myht.fa
+deepcoil:
+  file: EXTERNAL_REFERENCE_DATA/Haliotis/myht.out
+  cc_threshold: 0.5
+  anchor_threshold: 0.5
+trajectory:
+  topology: EXTERNAL_REFERENCE_DATA/Haliotis/md.tpr
+  trajectory: EXTERNAL_REFERENCE_DATA/Haliotis/md.xtc
+  mg_selection: segid seg_0_Protein_chain_A and resid 1:333
+  myht_selection: segid seg_1_Protein_chain_B and resid 334:398
+  cutoff_angstrom: 4.5
+  contact_mode: hard
+  smooth_power: 6
+  start: 0
+  stop: null
+  step: 1
+statistics:
+  n_permutations: 9999
+  block_size: 4
+  n_time_blocks: 20
+  seed: 20260801
+  primary_test: period7_max_mode
+  locked_template_file: null
+  target_phases:
+  - a
+  - d
+output_dir: results/reference26/taxa/Haliotis

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "harp-heptad"
+version = "4.1.0"
+description = "DeepCoil-anchored heptad analysis of IBAM-MyhT molecular-dynamics contact patterns"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=2.0",
+  "pandas>=2.0",
+  "PyYAML>=6.0",
+  "matplotlib>=3.8",
+  "MDAnalysis>=2.8",
+]
+
+[project.scripts]
+harp = "harp.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

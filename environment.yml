@@ -1,0 +1,14 @@
+name: harp41
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy>=2.0
+  - pandas>=2.0
+  - pyyaml>=6.0
+  - matplotlib>=3.8
+  - mdanalysis>=2.8
+  - pip
+  - pytest>=8
+  - pip:
+      - -e .

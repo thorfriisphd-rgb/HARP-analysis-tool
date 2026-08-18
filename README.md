@@ -1,262 +1,553 @@
-## Scientific Context
+# HARP v4.1 — Heptad Assignment Register Probe
 
-HARP is part of the broader CCMHCG/IBAM computational ecosystem, alongside PRCO and SWING.
+**A reproducible statistical framework for testing molecular-interface
+organization relative to an independently defined coiled-coil heptad register**
 
-In this framework:
+HARP v4.1 (Heptad Assignment Register Probe) was developed to examine the
+molecular interface between the myosin-tail-like coiled-coil region (MyhT) and
+the **major groove (MG) of IBAM** (C12orf29; In Between Actin and Myosin).
 
-- **PRCO** decodes persistent residue-level contacts from molecular dynamics trajectories.
-- **HARP** tests whether those contacts are enriched in particular coiled-coil heptad phases.
-- **SWING** tests whether projected interface residues show cross-taxon conservation and biochemical-class convergence.
+HARP asks a deliberately narrow question:
 
-Together, these methods support the working hypothesis that IBAM/C12orf29 recognises a degenerate coiled-coil interaction grammar associated with contractile systems.
+> **Are molecular-dynamics-derived MyhT–IBAM MG contacts organized with
+> respect to an independently defined MyhT coiled-coil heptad register more
+> strongly than expected under explicit null models?**
 
-HARP should not be viewed only as an endpoint validation assay. In the May 2026 RefSeq-guided revision, HARP/SWING behaviour helped expose and rationalise improved Myh-tail window selection, including the Ovis Myh7T rescue. This supports the use of HARP as an exploratory interaction-grammar discovery framework.
-
----
-
-## May 2026 RefSeq-Rescued Dataset
-
-The current canonical dataset incorporates the May 2026 input corrections used across the IBAM computational workflow.
-
-Key updates include:
-
-- correction of a major **Magallana angulata** C12 truncation
-    - previous: C12 1–231, MyhT 232–304
-    - current: C12 1–345, MyhT 346–413
-- extension of the **Ovis aries** Myh7T window
-    - previous: C12 1–325, MyhT 326–382
-    - current: C12 1–325, MyhT 326–400
-- regenerated PRCO tables for updated or harmonised taxa
-
-The canonical May 2026 run is provided under:
-
-```
-HARP-output/2026-05-10_08-53-04/
-```
-
----
-
-## Repository Structure
+The central design principle is **independence**:
 
 ```text
-├── data/
-│   ├── samples.csv
-│   └── prco/
-│       └── *_prco.csv
-│
-├── scripts/
-│   ├── run_batch_harp_panel.py
-│   ├── generate_harp_plots.py
-│   └── harp_run_scaffold.py
-│
-├── HARP-output/
-│   └── 2026-05-10_08-53-04/
-│       ├── harp_panel_summary.tsv
-│       ├── harp_panel_summary_20260510_085653.tsv
-│       ├── harp_rankings.tsv
-│       ├── harp_run_config.json
-│       ├── harp_run.log
-│       └── figures/
-│
-├── requirements.txt
-└── README.md
+DeepCoil2                                  Molecular dynamics
+sequence-based                            trajectory-derived
+MyhT register                             MyhT–IBAM MG contacts
+     │                                             │
+     ▼                                             ▼
+a  b  c  d  e  f  g                         contact pattern
+     │                                             │
+     └──────────────────┬──────────────────────────┘
+                        ▼
+                       HARP
+                        │
+                        ▼
+          Is their observed relationship
+          stronger than expected by chance?
 ```
----
 
-## Installation
+DeepCoil2 defines the MyhT heptad coordinate system. Molecular dynamics
+independently determines where and how persistently MyhT contacts the IBAM MG.
 
-Tested with Python 3.10+.
-
-Install dependencies:
-
-```
-pip install -r requirements.txt
-```
+**HARP does not derive the heptad register from the contact pattern that it
+subsequently tests.**
 
 ---
 
-## Running the Pipeline
+## The analytical problem
 
-From the repository root:
+Molecular dynamics can show which residues interact and how those interactions
+change through time. DeepCoil2 can independently predict the coiled-coil
+register of MyhT.
 
-```
-python scripts/run_batch_harp_panel.py
-```
+Visual inspection can suggest that persistent contacts favour particular
+heptad positions.
 
-Outputs are written to:
-
-```
-HARP-output/<timestamp>/
-```
-
-Each run is self-contained and does not overwrite previous results.
-
----
-
-## Outputs
-
-A standard HARP run writes:
-
-```text
-HARP-output/<timestamp>/
-├── harp_panel_summary.tsv
-├── harp_panel_summary_<timestamp>.tsv
-├── harp_rankings.tsv
-├── harp_run_config.json
-├── harp_run.log
-└── figures/
-    ├── 01_observed_vs_null_p95.svg
-    ├── 01_observed_vs_null_p95.png
-    ├── 01_observed_vs_null_p95.pdf
-    ├── 02_score_vs_margin.svg
-    ├── 02_score_vs_margin.png
-    ├── 02_score_vs_margin.pdf
-    ├── 03_phase_score_heatmap.svg
-    ├── 03_phase_score_heatmap.png
-    ├── 03_phase_score_heatmap.pdf
-    └── harp_plots_manifest.txt
-```
-
----
-### Summary Tables
-
-- **harp_panel_summary.tsv**
-    Canonical output used for downstream plotting
-
-- **harp_panel_summary_.tsv**
-    Archived run-specific output
-
-- **harp_rankings.tsv**
-    Ranked view for rapid inspection
-
----
-### Figures (auto-generated)
-
-1. **Observed vs null (95th percentile)**
-    Tests whether observed phase enrichment exceeds null expectation
-
-2. **Best score vs phase margin**
-    Separates strong/specific vs multi-register binding regimes
-
-3. **Phase-score landscape heatmap**
-    Full heptad phase distribution across taxa
-
-Figures are generated as SVG, PNG, and PDF.
-
----
-## Interpretation
-
-HARP quantifies whether persistent IBAM–MyhT contacts preferentially occupy particular heptad phases.
-
-Core metrics include:
-
-- **best score** — strongest observed phase-aligned contact enrichment
-- **margin** — separation between best and second-best phase scores
-- **best-minus-flat** — deviation from a flat/non-enriched profile
-- **empirical null p-values** — comparison against shuffled occupied-span nulls
-- **phase stability** — consistency of phase calls across cutoffs
+But visual pattern recognition is not statistical evidence.
 
 HARP distinguishes:
 
-- stable phase-biased interfaces
-- competing or multi-register phase profiles
-- weak or flat interaction profiles
-
-For the IBAM project, competing phases are not automatically interpreted as failure. A degenerate coiled-coil substrate may retain biologically meaningful multi-register compatibility.
-
----
-
-## Null Model
-
-The current canonical run uses:
-
 ```text
-shuffle_occupied_span
+contacts exist
 ```
 
-with:
+from:
 
 ```text
-10,000 permutations
-seed = 123
+contacts exhibit reproducible organization
+relative to an independently defined heptad coordinate system
 ```
 
-This tests whether the observed contact distribution exceeds expectations from shuffled occupied positions while preserving the occupied span structure of the interface.
+It maps trajectory-derived contact information onto the independently assigned
+MyhT heptad register and tests the resulting organization against explicit
+null models.
 
 ---
 
-## Relationship to SWING
+# The null hypothesis — A BLACK CAT SAT ON THE MAT
 
-HARP and SWING test related but distinct features of the IBAM–MyhT interaction grammar.
+Null models can sound considerably more mysterious than they need to.
 
-- HARP asks whether MD-derived contact residues are enriched in coiled-coil heptad phases.
-- SWING asks whether projected interface positions show evolutionary conservation and biochemical-class convergence across taxa.
+Consider a seven-word observation:
 
-The May 2026 RefSeq-guided rescue, especially the Ovis Myh7T window extension and Magallana truncation correction, strengthened both workflows and supports their use as exploratory tools for interaction-window discovery.
+```text
+A     BLACK     CAT     SAT     ON     THE     MAT
+1       2        3       4      5       6       7
+```
+
+The seven unique components form a recognizable arrangement:
+
+> **A BLACK CAT SAT ON THE MAT**
+
+Now perform a **Cat Shuffle**.
+
+Keep every word exactly once, but disrupt their observed arrangement:
+
+```text
+OBSERVED
+
+A     BLACK     CAT     SAT     ON     THE     MAT
+
+                         │
+                         │  CAT SHUFFLE
+                         │
+                         │  preserve the seven pieces
+                         │  disrupt their arrangement
+                         ▼
+
+MAT   ON        BLACK   A       THE    CAT     SAT
+
+SAT   MAT       THE     BLACK   CAT    A       ON
+
+THE   CAT       ON      MAT     A      SAT     BLACK
+
+                         ⋮
+```
+
+Every shuffled realization still contains exactly the same seven words.
+
+Nothing has been added. Nothing has been removed.
+
+**What has been disrupted is their organization.**
+
+Suppose we repeat the Cat Shuffle thousands of times and calculate a statistic
+measuring the type of organization present in the original arrangement.
+
+The null-hypothesis question becomes:
+
+> **How often can we disrupt the observed organization, while preserving the
+> underlying components, and nevertheless obtain a pattern at least as strong
+> as the one we actually observed?**
+
+That is the essential logic behind HARP's permutation tests.
+
+### Preserve the cat. Shuffle the arrangement. Test the pattern.
+
+A useful null model preserves the properties that are **not** being tested
+while disrupting the relationship that **is** being tested.
+
+The seven unique words also provide an intuitive parallel to the seven-state
+heptad coordinate system:
+
+```text
+sentence positions:    1  2  3  4  5  6  7
+heptad positions:      a  b  c  d  e  f  g
+```
+
+The Cat Shuffle is an analogy, not a literal representation of HARP's
+algorithms. Taxon-level and panel-level null models preserve different
+properties according to the hypothesis being tested.
+
+The shared principle is:
+
+> **Preserve what the null should preserve. Break the proposed organization.
+> Ask how often an equally strong pattern survives.**
+
+Formal definitions are given in the **HARP v4.1 Mathematical Supplement**.
 
 ---
 
-## Reproducibility
+## How HARP works
 
-All included outputs and figures can be regenerated directly:
+At the individual-taxon level:
+
+```text
+GROMACS trajectory + topology
+            │
+            ▼
+trajectory-derived
+MyhT–IBAM MG contacts
+            │
+            │             DeepCoil2
+            │             MyhT register
+            │                  │
+            └────────┬─────────┘
+                     ▼
+              heptad mapping
+                     │
+                     ▼
+               phase profile
+                     │
+                     ▼
+            taxon-level null
+                     │
+                     ▼
+                 inference
+```
+
+HARP combines trajectory-derived contact occupancy with the independently
+assigned MyhT heptad register and asks whether the observed phase organization
+is stronger than expected under its taxon-level null models.
+
+Across taxa, HARP asks whether those phase signatures share a common
+orientation:
+
+```text
+taxon phase signatures
+          │
+          ▼
+leave-one-out consensus
+          │
+          ▼
+shared phase alignment
+          │
+          ▼
+independent circular
+rotation of each taxon
+          │
+          ▼
+panel null distribution
+          │
+          ▼
+panel-level inference
+```
+
+For each taxon, the consensus is constructed from the **other** taxa before
+that taxon is compared with it.
+
+For the panel null, each taxon's complete seven-state signature is preserved
+but independently circularly rotated:
+
+```text
+observed:
+0  1  2  3  4  5  6
+
+possible rotations:
+1  2  3  4  5  6  0
+2  3  4  5  6  0  1
+3  4  5  6  0  1  2
+...
+6  0  1  2  3  4  5
+```
+
+The internal shape of each signature survives. Its shared orientation relative
+to the other taxa does not.
+
+The panel test therefore asks:
+
+> **Is the observed cross-taxon phase alignment stronger than expected when
+> every taxon retains its own seven-state pattern but their common orientation
+> is independently disrupted?**
+
+For a practical guide to HARP's six principal graphical outputs, see
+`docs/Interpreting HARP v4.1 graphical output.pdf`.
+
+---
+
+## Secondary QC
+
+Production inference uses:
+
+```text
+block_size = 4
+```
+
+A separate sensitivity analysis tests contiguous block sizes 1–7 without
+post-hoc optimization.
+
+In the frozen 26-taxon reference panel, 23/26 taxa remained stable across the
+reporting threshold. **Branchiostoma, Octopus and Naegleria** were flagged for
+review. Panel invariance passed.
+
+The production block size remains 4.
+
+See `qc/blocksize_sensitivity/README.md` for the full procedure and
+interpretation.
+
+---
+
+# Frozen 26-taxon reference dataset
+
+The HARP v4.1 reference panel contains **26 taxa** and **104 scientific input
+files** (~19 GB).
+
+The frozen corpus is archived separately on Zenodo:
+
+**DOI:** `10.5281/zenodo.21967201`
+
+Each taxon contains:
+
+```text
+md.tpr
+md.xtc
+myht.fa
+myht.out
+```
+
+GitHub contains the HARP source, authoritative reference configurations,
+canonical taxon roster and SHA-256 inventory. Zenodo contains the heavyweight
+scientific payload.
+
+That separation is deliberate.
+
+---
+
+# Getting HARP running
+
+HARP v4.1 was developed and frozen under **Linux using Bash, Conda and
+Python 3.11**.
+
+## 1. Clone and create the environment
 
 ```bash
-python scripts/run_batch_harp_panel.py
+git clone https://github.com/thorfriisphd-rgb/HARP-analysis-tool.git
+cd HARP-analysis-tool
+
+conda env create -f environment.yml
+conda activate harp41
+python -m pip install -e .
 ```
 
-No external datasets are required for the included 26-taxon panel.
+Check the installation:
 
-The canonical May 2026 run was generated with:
-
-```text
-samples: data/samples.csv
-prco_dir: data/prco
-null_model: shuffle_occupied_span
-shuffle_iter: 10000
-seed: 123
+```bash
+harp --help
 ```
 
 ---
-## License
 
-MIT License
+## 2. Obtain the reference data
 
-Copyright (c) Thor Einar Friis
+Download the frozen reference archive from Zenodo:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+**DOI:** `10.5281/zenodo.21967201`
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Files:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+```text
+HARP_v4.1_26taxa_reference_inputs_20260816.tar
+HARP_v4.1_26taxa_reference_inputs_20260816.tar.sha256
+```
+
+Verify the archive before extraction:
+
+```bash
+sha256sum -c HARP_v4.1_26taxa_reference_inputs_20260816.tar.sha256
+```
+
+Extract it:
+
+```bash
+tar -xf HARP_v4.1_26taxa_reference_inputs_20260816.tar
+```
+
+Point HARP directly to the extracted `26taxa/` scientific payload:
+
+```bash
+export HARP_REFERENCE_DATA_ROOT="/path/to/HARP_v4.1_Zenodo_input_26taxa_20260816/26taxa"
+```
+
+Check that HARP can see all 26 taxon directories:
+
+```bash
+find "$HARP_REFERENCE_DATA_ROOT" \
+  -mindepth 1 -maxdepth 1 -type d | wc -l
+```
+
+Expected:
+
+```text
+26
+```
+
+---
+
+## 3. Preflight
+
+From the repository root:
+
+```bash
+./run_reference_26taxa.sh preflight
+```
+
+Preflight checks:
+
+- corpus structure;
+- the canonical SHA-256 inventory;
+- all 26 trajectories independently with MDAnalysis;
+- the authoritative reference configurations; and
+- the packaged pytest suite.
+
+A successful run ends with:
+
+```text
+26-taxon reference preflight: PASS
+Frozen scientific inputs remained SHA-256 identical.
+```
+
+Do not proceed if preflight reports an integrity failure.
+
+---
+
+## 4. Reproduce the frozen analysis
+
+```bash
+./run_reference_26taxa.sh all
+```
+
+The canonical HARP v4.1 n=26 result is:
+
+```text
+observed      0.645128594598065
+p-value       0.0001
+null mean    -0.000521984561169
+null SD       0.151023083942446
+null q95      0.225049488444680
+permutations  9999
+seed          20260801
+```
+
+The runner treats these values as a **frozen numerical regression gate**.
+
+They are verification metadata; they do not enter the scientific calculation.
+
+Outputs are written to timestamped result directories rather than silently
+overwriting previous analyses.
+
+---
+
+## Documentation
+
+**Graphical interpretation**
+
+`docs/Interpreting HARP v4.1 graphical output.pdf`
+
+Start here to understand HARP's six principal graphical outputs and how they
+fit together.
+
+**Mathematical Supplement**
+
+`docs/HARP_v4_1_Mathematical_Supplement.pdf`
+
+Formal definitions of the statistics, null models, phase representations,
+permutation inference and panel analysis.
+
+**Reference dataset**
+
+`reference/26taxa/README.md`
+
+Reference-corpus verification and connection to the external Zenodo payload.
+
+**Block-size sensitivity QC**
+
+`qc/blocksize_sensitivity/README.md`
+
+Secondary robustness analysis around the frozen production block size.
+
+**Technical reference**
+
+`docs/HARP_v4.1_Technical_README.md`
+
+CLI commands, validation behaviour, outputs, reference-runner details and frozen benchmark information.
+
+**Release notes**
+
+`RELEASE_NOTES.md`
+
+Summary of the v4.1 release consolidation and freeze.
+
+---
+
+## Repository layout
+
+```text
+HARP-analysis-tool/
+├── README.md
+├── RELEASE_NOTES.md
+├── LICENSE
+├── environment.yml
+├── pyproject.toml
+├── run_reference_26taxa.sh
+│
+├── src/
+│   └── harp/
+│
+├── tests/
+│
+├── examples/
+│
+├── docs/
+│   ├── HARP_v4_1_Mathematical_Supplement.pdf
+│   └── Interpreting HARP v4.1 graphical output.pdf
+│
+├── reference/
+│   ├── configs/
+│   │   └── 26taxa/
+│   └── 26taxa/
+│       ├── README.md
+│       ├── taxa.txt
+│       └── HARP_v4.1_26taxa_input_sha256.tsv
+│
+└── qc/
+    └── blocksize_sensitivity/
+        ├── README.md
+        ├── qc_blocksize_sensitivity.sh
+        ├── check_panel_invariance.py
+        └── runs/
+```
+
+Large trajectories and completed analytical run directories are not part of
+the source repository.
+
+---
+
+## Scope
+
+HARP tests statistical organization of trajectory-derived molecular contacts
+relative to an independently defined heptad register.
+
+It does not by itself establish:
+
+- biochemical mechanism;
+- binding affinity;
+- evolutionary causation;
+- phylogenetic independence;
+- functional necessity.
+
+Those questions require independent evidence.
+
+HARP's job is narrower: to make a proposed relationship between molecular
+contact organization and an independently defined periodic coordinate system
+**explicit, testable, reproducible and falsifiable**.
 
 ---
 
 ## Citation
 
-If you use this pipeline, please cite:
+If HARP contributes to published work, please cite:
 
->Friis TE. C12orf29 encodes IBAM (In Between Actin and Myosin), a conserved actomyosin-associated protein exhibiting deeply conserved interaction grammar across eukaryotic evolution. Manuscript in preparation.
+**Friis TE.** C12orf29 encodes IBAM (In Between Actin and Myosin), a conserved
+actomyosin-associated protein exhibiting deeply conserved interaction grammar
+across eukaryotic evolution. *Manuscript in preparation.*
+
+When reproducing or reusing the frozen reference corpus, also cite:
+
+**HARP v4.1 — 26-taxon reference input dataset**
+Zenodo
+DOI: `10.5281/zenodo.21967201`
 
 ---
 
+## Licence
+
+HARP v4.1 is released under the [MIT License](LICENSE).
+
+---
 
 ## Author
 
-Thor Einar Friis
+**Thor Einar Friis, PhD**
 
-[![ORCID](https://img.shields.io/badge/ORCID-0000--0002--4132--4912-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-4132-4912)
+Independent Researcher
+PhD Molecular Biology, Queensland University of Technology
 
-Independent researcher, Bodø, Norway.
-PhD in Molecular Biology, Queensland University of Technology (QUT).
+ORCID: `0000-0002-7219-9334`
+
+HARP forms part of a reproducible computational framework developed for the
+investigation of IBAM/C12orf29 and the MyhT–IBAM major-groove interface.
