@@ -544,10 +544,10 @@ HARP v4.1 is released under the [MIT License](LICENSE).
 
 **Thor Einar Friis, PhD**
 
-Independent Researcher
-PhD Molecular Biology, Queensland University of Technology
+[![ORCID](https://img.shields.io/badge/ORCID-0000--0002--4132--4912-A6CE39?logo=orcid&logoColor=white)](https://orcid.org/0000-0002-4132-4912)
 
-ORCID: `0000-0002-7219-9334`
+Independent researcher, Bodø, Norway.
+PhD in Molecular Biology, Queensland University of Technology (QUT).
 
 HARP forms part of a reproducible computational framework developed for the
 investigation of IBAM/C12orf29 and the MyhT–IBAM major-groove interface.
