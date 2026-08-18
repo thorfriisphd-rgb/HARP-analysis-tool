@@ -1,26 +1,27 @@
-Branchiostoma
-Ciona
-Clytia
-Eisenia
-Euglena
-Euperipatoides
-Eutreptiella
-Hahella
-Haliotis
-Ischnura
-Lamellibrachia
-Lampetra
-Lingula
-Lithobius
-Mus
-Myxine
-Octopus
-Ovis
-Phoronis
-Podocoryna
-Saccoglossus
-Homo
-Magallana
-Willaertia
-Salpa
-Naegleria
+Branchiostoma floridae
+Ciona intestinalis
+Clytia hemispherica
+Eisenia fetida
+Euglena longa
+Euperipatoides rowelli
+Eutreptiella gymastica
+Hahella chejuensis
+Haliotis asinina
+Homo sapiens
+Ischnura elegans
+Lamellibrachia satsuma
+Lampetra planeri
+Lingula anatina
+Lithobius forficatus
+Magallana angulata
+Mus musculus
+Myxine glutinosa
+Naegleria gruberi
+Octopus vulgaris
+Ovis aries
+Phoronis australis
+Podocoryna carnea
+Saccoglossus kowalevski
+Salpa thompsoni
+Willaertia magna
+
