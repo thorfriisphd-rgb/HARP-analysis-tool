@@ -269,7 +269,7 @@ files** (~19 GB).
 
 The frozen corpus is archived separately on Zenodo:
 
-**DOI:** `10.5281/zenodo.21967201`
+**DOI:** [10.5281/zenodo.21967201](https://doi.org/10.5281/zenodo.21967201)
 
 Each taxon contains:
 
